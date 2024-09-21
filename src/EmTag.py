@@ -1,5 +1,5 @@
 from NfcConnecter import NfcConnecter
-from UI import UserInterface
+import UI
 import sys
 from PyQt5.QtWidgets import QApplication
 
@@ -11,7 +11,7 @@ def main():
     window = UserInterface()
     window.draw_entry_page()
     window.show()
-    nfcConnecter.observer.subscribe("add_card", window.go_to_access_page)
+    # nfcConnecter.observer.subscribe("add_card", window.go_to_access_page)
 
     sys.exit(app.exec_())
 

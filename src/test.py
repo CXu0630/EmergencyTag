@@ -5,6 +5,8 @@ from smartcard.ATR import ATR
 import sys
 import os
 import AesCtr
+from UI import UserInterface
+import EmTag
 
 class PrintCardObserver(CardObserver):
     def update(self, observable, actions):
@@ -115,6 +117,9 @@ def test_aes_ctr():
     decoded = AesCtr.aes_ctr_decrypt(nonce, cipher)
     print(decoded)
     print(len(decoded))
+
+
+
 
 if __name__ == "__main__":
     test_aes_ctr()

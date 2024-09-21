@@ -1,12 +1,14 @@
 import sys
 from PyQt5.QtWidgets import QMessageBox, QApplication, QLineEdit, QMainWindow, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
+from PyQt5.QtGui import QKeyEvent
 from EmInfoLength import EmInfoLength
 import NfcReader
 import NfcConnecter
 import NfcWriter
 import cryptography
 import dotenv
+import EmTag
 
 class UserInterface(QMainWindow):
     def __init__(self):
@@ -19,6 +21,8 @@ class UserInterface(QMainWindow):
         # Create a stacked widget to hold different pages
         self.stacked_widget = QStackedWidget(self)
         self.setCentralWidget(self.stacked_widget)
+
+        self.draw_entry_page()
     
     def draw_entry_page(self):
         self.entry_page = QWidget()
@@ -109,3 +113,6 @@ class UserInterface(QMainWindow):
     def go_to_edit_page(self):
         self.draw_edit_page()
         self.stacked_widget.setCurrentWidget(self.edit_page)
+
+   
+    
