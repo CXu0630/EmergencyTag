@@ -1,10 +1,12 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QLineEdit, QMainWindow, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget
+from PyQt5.QtWidgets import QMessageBox, QApplication, QLineEdit, QMainWindow, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget
 from PyQt5.QtCore import Qt
 from EmInfoLength import EmInfoLength
 import NfcReader
 import NfcConnecter
 import NfcWriter
+import cryptography
+import dotenv
 
 class UserInterface(QMainWindow):
     def __init__(self):
@@ -114,6 +116,6 @@ driver method to allow switching between interfaces
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = UserInterface()
-    window.draw_access_page()
+    window.draw_entry_page()
     window.show()
     sys.exit(app.exec_())
