@@ -98,7 +98,7 @@ class UserInterface(QMainWindow):
         QMessageBox.information(self, "Success", "Information updated successfully!")
         self.stacked_widget.setCurrentWidget(self.info_page)  
     
-    def go_to_access_page(self, connector):
+    def go_to_access_page(self):
         self.draw_access_page
         self.stacked_widget.setCurrentWidget(self.access_page)
     
@@ -113,7 +113,7 @@ class UserInterface(QMainWindow):
 '''
 driver method to allow switching between interfaces
 '''
-def start():
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = UserInterface()
     window.draw_entry_page()
