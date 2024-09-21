@@ -13,6 +13,9 @@ class EmInfoLength():
             raise KeyError(f"Category '{category}' not found in info_page_dict.")
         byte_length = (self.info_page_dict[category][1] - self.info_page_dict[category][0] + 1)*4
         return byte_length
+    def check_str_length(category, info):
+        em_info = EmInfoLength()
+        return em_info.byte_length(category) - len(info)
 # if __name__ == "__main__":
 #     em_info = EmInfoLength()
 #     try:
