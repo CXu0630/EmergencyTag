@@ -20,14 +20,12 @@ class EmInfoLength():
     check if the information length fits into the byte availability, returns negative when string length exceeds
     byte length, positive when string length is below byte length, 0 when string length is equal to byte length
     '''
-    def check_str_length(category, info):
-        em_info = EmInfoLength()
-        return em_info.byte_length(category) - len(info)
+    def check_str_length(self, category, info):
+        return self.byte_length(category) - len(info)
     
-    def trim_string(category, info):
-        em_info = EmInfoLength()
-        if em_info.check_str_length(category, info) < 0:
-            info = info[:em_info.byte_length(category)]
+    def trim_string(self, category, info):
+        if self.check_str_length(category, info) < 0:
+            info = info[:self.byte_length(category)]
         return info
 # if __name__ == "__main__":
 #     em_info = EmInfoLength()
