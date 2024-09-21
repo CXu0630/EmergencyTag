@@ -5,8 +5,6 @@ from EmInfoLength import EmInfoLength
 import NfcReader
 import NfcConnecter
 import NfcWriter
-import cryptography
-import dotenv
 
 class UserInterface(QMainWindow):
     def __init__(self):
@@ -17,7 +15,7 @@ class UserInterface(QMainWindow):
         self.setGeometry(800, 800, 1600, 800)
 
         # Create a stacked widget to hold different pages
-        self.stacked_widget = QStackedWidget(self)
+        self.stacked_widget = QStackedWidget()
         self.setCentralWidget(self.stacked_widget)
     
     def draw_entry_page(self):
@@ -59,8 +57,8 @@ class UserInterface(QMainWindow):
         layout.addWidget(exit_button)
         layout.addWidget(edit_button)
 
-        edit_button.clicked.connect(self.go_to_edit_page()) #connect to the edit page
-        exit_button.clicked.connect(self.go_to_access_page()) #connect to the access page
+        edit_button.clicked.connect(self.go_to_edit_page) #connect to the edit page
+        exit_button.clicked.connect(self.go_to_access_page) #connect to the access page
 
         self.info_page.setLayout(layout)
         self.stacked_widget.addWidget(self.info_page) # Add page to the stacked widget
