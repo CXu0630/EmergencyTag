@@ -42,8 +42,9 @@ class NfcConnecter:
         print("\nMonitoring card events. Press Ctrl+C to exit.\n")
 
         try:
-            while True:
-                pass  # Keep the script running
+            # while True:
+            #     pass  # Keep the script running
+            x = 0
         except KeyboardInterrupt:
             self.exit()
     

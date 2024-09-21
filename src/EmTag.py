@@ -11,9 +11,9 @@ def main():
     window = UserInterface()
     window.draw_entry_page()
     window.show()
-    sys.exit(app.exec_())
-    
     nfcConnecter.observer.subscribe("add_card", window.go_to_access_page)
+
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
     main()
