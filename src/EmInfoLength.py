@@ -8,11 +8,18 @@ class EmInfoLength():
         info_page_dict['allergies'] = (17, 26)
         info_page_dict['med_history'] = (27, 32)
         self.info_page_dict = info_page_dict
+    '''
+    calculate byte availability for each category
+    '''
     def byte_length(self, category):
         if category not in self.info_page_dict:
             raise KeyError(f"Category '{category}' not found in info_page_dict.")
         byte_length = (self.info_page_dict[category][1] - self.info_page_dict[category][0] + 1)*4
         return byte_length
+    '''
+    check if the information length fits into the byte availability, returns negative when string length exceeds
+    byte length, positive when string length is below byte length, 0 when string length is equal to byte length
+    '''
     def check_str_length(category, info):
         em_info = EmInfoLength()
         return em_info.byte_length(category) - len(info)
