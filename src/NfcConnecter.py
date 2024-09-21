@@ -35,7 +35,7 @@ class NfcConnecter:
             self.observer = EmCardObserver()
             self.monitor.addObserver(self.observer)
         
-            self.observer.subscribe("add_card", self.readOnConnection)
+            #self.observer.subscribe("add_card", self.readOnConnection)
         except Exception as e:
             print(f"\nError creating monitor and observer, {e}")
 

@@ -109,13 +109,3 @@ class UserInterface(QMainWindow):
     def go_to_edit_page(self):
         self.draw_edit_page()
         self.stacked_widget.setCurrentWidget(self.edit_page)
-    
-'''
-driver method to allow switching between interfaces
-'''
-def start():
-    app = QApplication(sys.argv)
-    window = UserInterface()
-    window.draw_entry_page()
-    window.show()
-    sys.exit(app.exec_())
