@@ -6,7 +6,8 @@ class EmInfoLength():
         info_page_dict['em_contact'] = (10, 14)
         info_page_dict['birth_date'] = (15, 16)
         info_page_dict['allergies'] = (17, 26)
-        info_page_dict['med_history'] = (27, 32)
+        info_page_dict['med_history'] = (27, 31)
+        info_page_dict['nonce'] = (32, 35)
         self.info_page_dict = info_page_dict
     '''
     calculate byte availability for each category

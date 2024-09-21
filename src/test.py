@@ -3,6 +3,8 @@ from smartcard.util import toHexString
 from smartcard.System import readers
 from smartcard.ATR import ATR
 import sys
+import os
+import AesCtr
 
 class PrintCardObserver(CardObserver):
     def update(self, observable, actions):
@@ -97,5 +99,22 @@ def main():
         monitor.deleteObserver(observer)
         sys.exit(0)
 
+
+def genKey():
+    print(os.urandom(32))
+    
+def test_aes_ctr():
+    nonce = AesCtr.gen_nonce()
+    
+    text = "this is the test text"
+    
+    cipher = AesCtr.aes_ctr_encrypt(nonce, text)
+    print(cipher)
+    print(len(cipher))
+
+    decoded = AesCtr.aes_ctr_decrypt(nonce, cipher)
+    print(decoded)
+    print(len(decoded))
+
 if __name__ == "__main__":
-    main()
+    test_aes_ctr()

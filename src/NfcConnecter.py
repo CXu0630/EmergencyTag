@@ -5,8 +5,9 @@ from smartcard.ATR import ATR
 import sys
 
 from EmCardObserver import EmCardObserver
-import NfcWriter
-import NfcReader
+from NfcWriter import NfcWriter
+from NfcReader import NfcReader
+import AesCtr
 
 class NfcConnecter:
     def __init__(self):
@@ -52,7 +53,11 @@ class NfcConnecter:
         sys.exit(0)
 
     def writeOnConnection(self, connection):
-        NfcWriter.write_category(connection, "name", "Chloe X")
+        nonce = AesCtr.gen_nonce()
+        writer = NfcWriter(nonce, connection)
+        writer.write_category("name", "Chloe X")
+        writer.write_nonce()
         
     def readOnConnection(self, connection):
-        print(NfcReader.read_category(connection, "name"))
+        reader = NfcReader(connection)
+        print(reader.read_category("name"))
