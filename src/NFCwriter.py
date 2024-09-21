@@ -47,7 +47,7 @@ def write_category(connection, category, info):
         info_bytes += b'\x00'
     
     # Split the info_bytes into 4-byte chunks
-    pages = [info_bytes[i:i+4] for i in range(0, len(name_bytes), 4)]
+    pages = [info_bytes[i:i+4] for i in range(0, len(info_bytes), 4)]
     
     # Starting page (e.g., page 4 for user data in NTAG213)
     starting_page = em_info_dict[category][0]
