@@ -35,15 +35,16 @@ class NfcConnecter:
             self.observer = EmCardObserver()
             self.monitor.addObserver(self.observer)
         
-            self.observer.subscribe("add_card", self.readOnConnection)
+            #self.observer.subscribe("add_card", self.readOnConnection)
         except Exception as e:
             print(f"\nError creating monitor and observer, {e}")
 
         print("\nMonitoring card events. Press Ctrl+C to exit.\n")
 
         try:
-            while True:
-                pass  # Keep the script running
+            # while True:
+            #     pass  # Keep the script running
+            x = 0
         except KeyboardInterrupt:
             self.exit()
     

@@ -59,8 +59,8 @@ class UserInterface(QMainWindow):
         layout.addWidget(exit_button)
         layout.addWidget(edit_button)
 
-        edit_button.clicked.connect(self.go_to_edit_page) #connect to the edit page
-        exit_button.clicked.connect(self.go_to_access_page) #connect to the access page
+        edit_button.clicked.connect(self.go_to_edit_page()) #connect to the edit page
+        exit_button.clicked.connect(self.go_to_access_page()) #connect to the access page
 
         self.info_page.setLayout(layout)
         self.stacked_widget.addWidget(self.info_page) # Add page to the stacked widget
@@ -98,12 +98,12 @@ class UserInterface(QMainWindow):
         QMessageBox.information(self, "Success", "Information updated successfully!")
         self.stacked_widget.setCurrentWidget(self.info_page)  
     
-    def go_to_access_page(self):
+    def go_to_access_page(self, connector):
         self.draw_access_page
         self.stacked_widget.setCurrentWidget(self.access_page)
     
     def go_to_info_page(self):
-        self.draw_info_page
+        self.draw_info_page()
         self.stacked_widget.setCurrentWidget(self.info_page)
     
     def go_to_edit_page(self):
@@ -113,7 +113,7 @@ class UserInterface(QMainWindow):
 '''
 driver method to allow switching between interfaces
 '''
-if __name__ == "__main__":
+def start():
     app = QApplication(sys.argv)
     window = UserInterface()
     window.draw_entry_page()
