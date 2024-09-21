@@ -1,5 +1,4 @@
-from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.System import readers
+from smartcard.CardMonitoring import CardObserver
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
 

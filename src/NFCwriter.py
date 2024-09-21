@@ -1,10 +1,5 @@
-from smartcard.System import readers
 from smartcard.util import toHexString
-import sys
-import nfc
-import struct
-import time
-import EmInfoLength
+from EmInfoLength import EmInfoLength
 
 def write_page(connection, page_number, data_bytes):
     """
@@ -39,7 +34,7 @@ def write_category(connection, category, info):
     """
     Write the information into the given category to the NFC card.
     """
-    em_info_dict = EmInfoLength()
+    em_info = EmInfoLength()
     info_bytes = process_info_str(category, info)
 
     # Pad the info_bytes to make it a multiple of 4 bytes
@@ -50,7 +45,7 @@ def write_category(connection, category, info):
     pages = [info_bytes[i:i+4] for i in range(0, len(info_bytes), 4)]
     
     # Starting page (e.g., page 4 for user data in NTAG213)
-    starting_page = em_info_dict[category][0]
+    starting_page = em_info.get_start_page(category)
     
     for i, page in enumerate(pages):
         page_number = starting_page + i
