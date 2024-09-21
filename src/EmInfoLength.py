@@ -23,6 +23,12 @@ class EmInfoLength():
     def check_str_length(category, info):
         em_info = EmInfoLength()
         return em_info.byte_length(category) - len(info)
+    
+    def trim_string(category, info):
+        em_info = EmInfoLength()
+        if em_info.check_str_length(category, info) < 0:
+            info = info[:em_info.byte_length(category)]
+        return info
 # if __name__ == "__main__":
 #     em_info = EmInfoLength()
 #     try:
