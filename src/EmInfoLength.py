@@ -14,7 +14,7 @@ class EmInfoLength():
     def byte_length(self, category):
         if category not in self.info_page_dict:
             raise KeyError(f"Category '{category}' not found in info_page_dict.")
-        byte_length = (self.info_page_dict[category][1] - self.info_page_dict[category][0] + 1)*4
+        byte_length = self.get_num_pages(category) * 4
         return byte_length
     '''
     check if the information length fits into the byte availability, returns negative when string length exceeds
@@ -27,6 +27,15 @@ class EmInfoLength():
         if self.check_str_length(category, info) < 0:
             info = info[:self.byte_length(category)]
         return info
+    
+    def get_start_page(self, category):
+        return self.info_page_dict[category][0]
+    
+    def get_page_range(self, category):
+        return self.info_page_dict[category]
+
+    def get_num_pages(self, category):
+        return (self.info_page_dict[category][1] - self.info_page_dict[category][0] + 1)
 # if __name__ == "__main__":
 #     em_info = EmInfoLength()
 #     try:
