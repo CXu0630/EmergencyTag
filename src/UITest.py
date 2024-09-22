@@ -61,8 +61,10 @@ class UserInterface(QMainWindow):
     def create_info_page(self):
         info_page = QWidget()
         
-        layout = QFormLayout()  # Use QFormLayout for label-field alignment
-        layout.setContentsMargins(50, 50, 50, 50)
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(50, 50, 50, 50)
+
+        info_layout = QFormLayout()  # Use QFormLayout for label-field alignment
 
         try:
             for key in self.cat_strings:
@@ -76,7 +78,7 @@ class UserInterface(QMainWindow):
                 text_label.setFixedWidth(400)      # Adjust as needed
 
                 # Add the label and text to the form layout
-                layout.addRow(category_label, text_label)
+                info_layout.addRow(category_label, text_label)
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to create base template: {e}")
 
@@ -91,14 +93,15 @@ class UserInterface(QMainWindow):
         buttons_layout.addWidget(exit_button)
         buttons_layout.addWidget(edit_button)
 
-        # Add the buttons_layout to the form layout
-        layout.addRow(buttons_layout)
-
         # Correct connections without calling the methods
         edit_button.clicked.connect(self.go_to_edit_page)
         exit_button.clicked.connect(self.go_to_access_page)
 
-        info_page.setLayout(layout)
+        main_layout.addLayout(info_layout)
+        main_layout.addStretch()
+        main_layout.addLayout(buttons_layout)
+
+        info_page.setLayout(main_layout)
 
         return info_page
 
