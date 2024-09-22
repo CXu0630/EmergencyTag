@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import (
     QMessageBox, QLineEdit, QMainWindow, QLabel,
-    QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget
+    QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget, QFormLayout
 )
 from PyQt5.QtCore import Qt
 from EmInfoLength import EmInfoLength
@@ -11,12 +11,18 @@ import NfcConnecter
 import NfcWriter
 
 class UserInterface(QMainWindow):
+    
     def __init__(self):
         super().__init__()
 
+        self.categories = ['name', 'blood_type', 'em_contact', 'birth_date', 'allergies', 
+                  'med_history']
+        self.cat_strings = ['Name', 'Blood Type', 'Emergency Contact', 'Birth Date',
+                            'Allergies', 'Medical History']
+
         # Initialize the main window
         self.setWindowTitle("EM TAG")
-        self.setGeometry(100, 100, 800, 600)  # Adjusted size for testing
+        self.setGeometry(800, 800, 700, 1000)
 
         # Create a stacked widget to hold different pages
         self.stacked_widget = QStackedWidget()
@@ -25,10 +31,12 @@ class UserInterface(QMainWindow):
         # Initialize pages
         self.entry_page = self.create_entry_page()
         self.access_page = self.create_access_page()
+        self.info_page = self.create_info_page()
 
         # Add all pages to the stacked widget
         self.stacked_widget.addWidget(self.entry_page)
         self.stacked_widget.addWidget(self.access_page)
+        self.stacked_widget.addWidget(self.info_page)
 
         # Show the entry page initially
         self.stacked_widget.setCurrentWidget(self.entry_page)
@@ -36,7 +44,7 @@ class UserInterface(QMainWindow):
     def create_entry_page(self):
         entry_page = QWidget()
         layout = QHBoxLayout()
-        message = QLabel("No NFC card detected. Please connect to a card.")
+        message = QLabel("Please tap an EmTag NFC Tag to begin.")
         layout.addWidget(message, alignment=Qt.AlignCenter)
         entry_page.setLayout(layout)
         return entry_page
@@ -47,60 +55,56 @@ class UserInterface(QMainWindow):
         center_button = QPushButton("Access")
         layout.addWidget(center_button, alignment=Qt.AlignCenter)
         access_page.setLayout(layout)
-        #center_button.clicked.connect(self.go_to_info_page)
+        center_button.clicked.connect(self.go_to_info_page)
         return access_page
 
     def create_info_page(self):
         info_page = QWidget()
-        layout = QVBoxLayout()
-
-        em_dict = EmInfoLength().info_page_dict
-        self.info_dict = {
-            'name': 'Chloe X',
-            'blood_type': 'O+',
-            'em_contact': '123-456-7890',
-            'birth_date': '1990-01-01',
-            'allergies': 'None',
-            'med_history': 'None'
-        }
+        
+        layout = QFormLayout()  # Use QFormLayout for label-field alignment
+        layout.setContentsMargins(50, 50, 50, 50)
 
         try:
-            for key in em_dict:
-                info = self.info_dict[key]
+            for key in self.cat_strings:
+                info = "None"  # Replace with actual data retrieval logic
                 category_label = QLabel(f"{key}:")
                 text_label = QLabel(info)
-                layout.addWidget(category_label)
-                layout.addWidget(text_label)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to read NFC data: {e}")
+                text_label.setWordWrap(True)  # Enable word wrap for long text
 
-        layout.addStretch()
+                # Optionally set fixed widths for consistency
+                category_label.setFixedWidth(200)  # Adjust as needed
+                text_label.setFixedWidth(400)      # Adjust as needed
+
+                # Add the label and text to the form layout
+                layout.addRow(category_label, text_label)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to create base template: {e}")
+
+        # Create a horizontal layout for buttons
+        buttons_layout = QHBoxLayout()
+        buttons_layout.addStretch()  # Push buttons to the right
 
         exit_button = QPushButton("Back")
         edit_button = QPushButton("Edit")
-        layout.addWidget(exit_button)
-        layout.addWidget(edit_button)
 
-        # Correct connections without parentheses
+        # Add buttons to the buttons_layout
+        buttons_layout.addWidget(exit_button)
+        buttons_layout.addWidget(edit_button)
+
+        # Add the buttons_layout to the form layout
+        layout.addRow(buttons_layout)
+
+        # Correct connections without calling the methods
         edit_button.clicked.connect(self.go_to_edit_page)
         exit_button.clicked.connect(self.go_to_access_page)
 
         info_page.setLayout(layout)
+
         return info_page
 
     def create_edit_page(self):
         edit_page = QWidget()
         layout = QVBoxLayout()
-
-        # Example info_dict; replace with actual data as needed
-        self.info_dict = {
-            'name': 'Chloe X',
-            'blood_type': 'O+',
-            'em_contact': '123-456-7890',
-            'birth_date': '1990-01-01',
-            'allergies': 'None',
-            'med_history': 'None'
-        }
 
         self.edit_fields = {}
         for key, value in self.info_dict.items():
