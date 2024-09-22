@@ -18,8 +18,8 @@ def write_on_tap(connection):
     temp_writer.write_category("med_history", "diabetes")
 
 def main():
-    # nfcConnecter = NfcConnecter()
-    # nfcConnecter.start()
+    nfcConnecter = NfcConnecter()
+    nfcConnecter.start()
     
     app = QApplication(sys.argv)
     window = UserInterface()
