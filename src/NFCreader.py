@@ -1,4 +1,5 @@
 from smartcard.util import toHexString
+from smartcard.CardConnection import CardConnection
 from EmInfoLength import EmInfoLength
 import AesCtr
 
@@ -38,7 +39,16 @@ class NfcReader:
     
         for i in range(num_pages):
             page_number = starting_page + i
-            data = self.read_page(page_number)
+            data = None
+            read_attempts = 0
+            while read_attempts < 4:
+                try:
+                    data = self.read_page(page_number)
+                    read_attempts = 99
+                except:
+                    read_attempts += 1
+                    if read_attempts == 4:
+                        print(f"Error reading from {category}")
             if data:
                 str_bytes.extend(data)
             else:
@@ -63,7 +73,16 @@ class NfcReader:
 
         for i in range(num_pages):
             page_number = starting_page + i
-            data = self.read_page(page_number)
+            data = None
+            read_attempts = 0
+            while read_attempts < 4:
+                try:
+                    data = self.read_page(page_number)
+                    read_attempts = 99
+                except:
+                    read_attempts += 1
+                    if read_attempts == 4:
+                        print(f"Error reading from nonce")
             if data:
                 str_bytes.extend(data)
             else:

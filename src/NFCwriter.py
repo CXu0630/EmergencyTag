@@ -1,4 +1,5 @@
 from smartcard.util import toHexString
+from smartcard.CardConnection import CardConnection
 from EmInfoLength import EmInfoLength
 import AesCtr
 
