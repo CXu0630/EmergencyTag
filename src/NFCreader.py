@@ -16,10 +16,13 @@ class NfcReader:
         # Construct the APDU command
         # Example for ACR122U: CLA=FF, INS=B0, P1=00, P2=page_number, Le=04
         apdu = [0xFF, 0xB0, 0x00, page_number, 0x04]
-        print(f"Sending APDU: {toHexString(apdu)}")
     
-        # Send the APDU
-        response, sw1, sw2 = self.connection.transmit(apdu)
+        try:
+            response, sw1, sw2 = self.connection.transmit(apdu)
+        except:
+            print("Trying to reestablish connection.")
+            self.connection.reconnect()
+            response, sw1, sw2 = self.connection.transmit(apdu)
     
         if sw1 == 0x90 and sw2 == 0x00:
             return response
@@ -39,16 +42,7 @@ class NfcReader:
     
         for i in range(num_pages):
             page_number = starting_page + i
-            data = None
-            read_attempts = 0
-            while read_attempts < 4:
-                try:
-                    data = self.read_page(page_number)
-                    read_attempts = 99
-                except:
-                    read_attempts += 1
-                    if read_attempts == 4:
-                        print(f"Error reading from {category}")
+            data = self.read_page(page_number)
             if data:
                 str_bytes.extend(data)
             else:
@@ -73,16 +67,7 @@ class NfcReader:
 
         for i in range(num_pages):
             page_number = starting_page + i
-            data = None
-            read_attempts = 0
-            while read_attempts < 4:
-                try:
-                    data = self.read_page(page_number)
-                    read_attempts = 99
-                except:
-                    read_attempts += 1
-                    if read_attempts == 4:
-                        print(f"Error reading from nonce")
+            data = self.read_page(page_number)
             if data:
                 str_bytes.extend(data)
             else:

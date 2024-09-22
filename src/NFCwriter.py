@@ -20,10 +20,14 @@ class NfcWriter:
         # Construct the APDU command
         # Example for ACR122U: CLA=FF, INS=D6, P1=00, P2=page_number, Lc=04, Data=4 bytes
         apdu = [0xFF, 0xD6, 0x00, page_number, 0x04] + data_bytes
-        print(f"Sending APDU: {toHexString(apdu)}")
     
         # Send the APDU
-        response, sw1, sw2 = self.connection.transmit(apdu)
+        try:
+            response, sw1, sw2 = self.connection.transmit(apdu)
+        except:
+            print("Trying to reestablish connection.")
+            self.connection.reconnect()
+            response, sw1, sw2 = self.connection.transmit(apdu)
     
         # Check response status
         if sw1 == 0x90 and sw2 == 0x00:

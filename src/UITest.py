@@ -245,10 +245,10 @@ class UserInterface(QMainWindow):
 
         try:
             for i in range(len(self.cat_strings)):
-                info = reader.read_category(self.categories[i])  # Replace with actual data retrieval logic
+                info = reader.read_category(self.categories[i])
                 category_label = QLabel(f"{self.cat_strings[i]}:")
                 text_field = QLineEdit()
-                text_field.setText = info
+                text_field.insert(info)
                 
                 self.edit_fields[self.categories[i]] = text_field
 
@@ -292,15 +292,17 @@ class UserInterface(QMainWindow):
         try:
             for key, line_edit in self.edit_fields.items():
                 new_value = line_edit.text()
+                print(new_value)
                 # Write the new value to the NFC card
                 writer.write_category(key, new_value)
 
+            writer.write_nonce()
             QMessageBox.information(self, "Success", "Information updated successfully!")
+            self.repopulate_info_page()
             self.stacked_widget.setCurrentWidget(self.info_page)
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to update NFC data: {e}")
             
-        self.repopulate_info_page()
         self.go_to_info_page()
 
     def go_to_access_page(self):

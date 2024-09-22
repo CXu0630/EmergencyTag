@@ -10,6 +10,8 @@ class EmCardObserver(CardObserver, QObject):
     def __init__(self):
         CardObserver.__init__(self)
         QObject.__init__(self)
+        
+        self.added_cards = []
         # self._events = {}
         # self._events['add_card'] = []
         # self._events['remove_card'] = []
@@ -33,7 +35,18 @@ class EmCardObserver(CardObserver, QObject):
             print(f"Card removed from reader: {card.reader}")
             # Emit the remove_card_signal
             self.remove_card_signal.emit()
+    
+    def reconnect(self):
+        for card in self.added_cards:
+            print("Trying to reconnect with card.")
+            try:
+                connection = card.createConnection()
+                connection.connect()
             
+                return connection
+            except Exception as e:
+                print("Failed to reestablish connection.")
+                return None
     # def subscribe(self, event_name, fn):
     #     """Subscribe a function to a specific event."""
     #     if event_name not in self._events:
