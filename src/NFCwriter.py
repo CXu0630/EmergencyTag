@@ -54,7 +54,7 @@ class NfcWriter:
         info_bytes = self.process_info_str(category, info)
 
         # Pad the info_bytes to make it a multiple of 4 bytes
-        while len(info_bytes) % 4 != 0:
+        while len(info_bytes) < (em_info.get_num_pages(category) * 4):
             info_bytes += b'\x00'
     
         # Split the info_bytes into 4-byte chunks

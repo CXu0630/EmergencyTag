@@ -25,9 +25,8 @@ def main():
     window = UserInterface()
     window.show()
 
-    # nfcConnecter.observer.add_card_signal.connect(write_on_tap)
-    # nfcConnecter.observer.add_card_signal.connect(window.add_card_handler)
-    # nfcConnecter.observer.remove_card_signal.connect(window.remove_card_handler)
+    nfcConnecter.observer.add_card_signal.connect(window.add_card_handler)
+    nfcConnecter.observer.remove_card_signal.connect(window.remove_card_handler)
 
     sys.exit(app.exec_())
 
