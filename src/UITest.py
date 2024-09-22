@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
     QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget, QFormLayout
 )
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon, QFontDatabase, QFont
 from EmInfoLength import EmInfoLength
 from NfcReader import NfcReader
 from NfcWriter import NfcWriter
@@ -25,12 +25,14 @@ class UserInterface(QMainWindow):
         self.edit_fieds = {}
 
         # Initialize the main window
-        self.setWindowTitle("EM TAG")
+        self.setWindowTitle("emtag")
         self.setGeometry(800, 800, 700, 1000)
+        # Set window icon (logo)
+        self.setWindowIcon(QIcon("E:\EmergencyTag\logo ai-02.png"))
 
         # Add a tool bar at the top of the window
         self.toolbar = QToolBar()
-        self.toolbar.setFixedHeight(250)
+        self.toolbar.setFixedHeight(250) # Set height of the top tool bar
         self.toolbar.setStyleSheet("QToolBar { border: none; }")
         self.addToolBar(self.toolbar)
 
@@ -74,6 +76,10 @@ class UserInterface(QMainWindow):
         entry_page = QWidget()
         layout = QHBoxLayout()
         message = QLabel("Please tap an EmTag NFC Tag to begin.")
+
+        #set a font for prompt message
+        # prompt_msg_font = QFont('Century Gothic', 10)
+        # message.setFont(prompt_msg_font)
         layout.addWidget(message, alignment=Qt.AlignCenter)
         entry_page.setLayout(layout)
         return entry_page
@@ -326,3 +332,13 @@ class UserInterface(QMainWindow):
     def remove_card_handler(self):
         self.go_to_entry_page()
         self.connection = None
+
+# app = QApplication([])
+
+# # Get available font families
+# font_database = QFontDatabase()
+# font_families = font_database.families()
+
+# # Print the list of available fonts
+# for font in font_families:
+#     print(font)
