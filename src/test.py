@@ -5,7 +5,7 @@ from smartcard.ATR import ATR
 import sys
 import os
 import AesCtr
-from UI import UserInterface
+from UITest import UserInterface
 import EmTag
 
 class PrintCardObserver(CardObserver):

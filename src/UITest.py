@@ -1,10 +1,11 @@
 # UserInterface.py
 
 from PyQt5.QtWidgets import (
-    QMessageBox, QLineEdit, QMainWindow, QLabel,
+    QMessageBox, QLineEdit, QMainWindow, QLabel, QToolBar, QSizePolicy, QSpacerItem,
     QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget, QFormLayout
 )
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 from EmInfoLength import EmInfoLength
 from NfcReader import NfcReader
 from NfcWriter import NfcWriter
@@ -24,6 +25,29 @@ class UserInterface(QMainWindow):
         # Initialize the main window
         self.setWindowTitle("EM TAG")
         self.setGeometry(800, 800, 700, 1000)
+
+        # Add a tool bar at the top of the window
+        self.toolbar = QToolBar()
+        self.toolbar.setFixedHeight(250)
+        self.toolbar.setStyleSheet("QToolBar { border: none; }")
+        self.addToolBar(self.toolbar)
+
+        # Create spacer widgets
+        spacer_left = QWidget()
+        spacer_left.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        spacer_right = QWidget()
+        spacer_right.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        
+
+        # Load the logo image
+        logo_pixmap = QPixmap("E:\EmergencyTag\logo ai-01.png")
+        logo_label = QLabel()
+        logo_label.setPixmap(logo_pixmap)
+
+        # Add spacer widgets and the logo to the toolbar
+        self.toolbar.addWidget(spacer_left)  # Left spacer
+        self.toolbar.addWidget(logo_label)    # Logo
+        self.toolbar.addWidget(spacer_right)  # Right spacer
 
         # Create a stacked widget to hold different pages
         self.stacked_widget = QStackedWidget()
