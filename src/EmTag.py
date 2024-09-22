@@ -11,6 +11,7 @@ def main():
     window = UserInterface()
     window.show()
     nfcConnecter.observer.add_card_signal.connect(window.go_to_access_page)
+    nfcConnecter.observer.remove_card_signal.connect(window.go_to_entry_page)
 
     sys.exit(app.exec_())
 
