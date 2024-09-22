@@ -10,6 +10,7 @@ from PyQt5.QtGui import QPixmap, QIcon, QFontDatabase, QFont
 from EmInfoLength import EmInfoLength
 from NfcReader import NfcReader
 from NfcWriter import NfcWriter
+import os
 
 class UserInterface(QMainWindow):
     
@@ -23,6 +24,13 @@ class UserInterface(QMainWindow):
         self.cat_strings = ['Name', 'Blood Type', 'Emergency Contact', 'Birth Date',
                             'Allergies', 'Medical History']
         self.edit_fieds = {}
+
+        # Get the absolute path of the current file
+        current_file = os.path.abspath(__file__)
+        # Get the directory name of the current file
+        current_dir = os.path.dirname(current_file)
+        # Get the parent directory
+        parent_dir = os.path.dirname(current_dir)
 
         # Initialize the main window
         self.setWindowTitle("emtag")
