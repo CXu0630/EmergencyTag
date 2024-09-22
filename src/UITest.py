@@ -28,7 +28,7 @@ class UserInterface(QMainWindow):
         self.setWindowTitle("emtag")
         self.setGeometry(800, 800, 700, 1000)
         # Set window icon (logo)
-        self.setWindowIcon(QIcon("E:\EmergencyTag\logo ai-02.png"))
+        self.setWindowIcon(QIcon("logo ai-02.png"))
 
         # Add a tool bar at the top of the window
         self.toolbar = QToolBar()
@@ -44,7 +44,7 @@ class UserInterface(QMainWindow):
         
 
         # Load the logo image
-        logo_pixmap = QPixmap("E:\EmergencyTag\logo ai-01.png")
+        logo_pixmap = QPixmap("logo ai-01.png")
         logo_label = QLabel()
         logo_label.setPixmap(logo_pixmap)
 
