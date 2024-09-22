@@ -32,7 +32,7 @@ class UserInterface(QMainWindow):
 
         # Add a tool bar at the top of the window
         self.toolbar = QToolBar()
-        self.toolbar.setFixedHeight(250) # Set height of the top tool bar
+        self.toolbar.setFixedHeight(350) # Set height of the top tool bar
         self.toolbar.setStyleSheet("QToolBar { border: none; }")
         self.addToolBar(self.toolbar)
 
