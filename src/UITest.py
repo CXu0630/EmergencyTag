@@ -1,7 +1,7 @@
 # UserInterface.py
 
 from PyQt5.QtWidgets import (
-    QMessageBox, QLineEdit, QMainWindow, QLabel,
+    QMessageBox, QLineEdit, QMainWindow, QLabel, QLineEdit,
     QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget, QFormLayout
 )
 from PyQt5.QtCore import Qt
@@ -152,6 +152,60 @@ class UserInterface(QMainWindow):
 
                 # Add the label and text to the form layout
                 info_layout.addRow(category_label, text_label)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to create base template: {e}")
+
+        # Create a horizontal layout for buttons
+        buttons_layout = QHBoxLayout()
+        buttons_layout.addStretch()  # Push buttons to the right
+
+        exit_button = QPushButton("Back")
+        edit_button = QPushButton("Edit")
+
+        # Add buttons to the buttons_layout
+        buttons_layout.addWidget(exit_button)
+        buttons_layout.addWidget(edit_button)
+
+        # Correct connections without calling the methods
+        edit_button.clicked.connect(self.go_to_edit_page)
+        exit_button.clicked.connect(self.go_to_access_page)
+
+        main_layout.addLayout(info_layout)
+        main_layout.addStretch()
+        main_layout.addLayout(buttons_layout)
+
+        info_page.setLayout(main_layout)
+        
+        self.stacked_widget.removeWidget(self.info_page)
+        self.info_page = info_page
+        self.stacked_widget.addWidget(self.info_page)
+
+    def repopulate_edit_page(self):
+        edit_page = QWidget()
+        if self.connection == None:
+            print('No connection, unable to repopulate edit page.')
+            return None
+        
+        reader = NfcReader(self.connection)
+
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(50, 50, 50, 50)
+
+        info_layout = QFormLayout()  # Use QFormLayout for label-field alignment
+
+        try:
+            for i in range(len(self.cat_strings)):
+                info = reader.read_category(self.categories[i])  # Replace with actual data retrieval logic
+                category_label = QLabel(f"{self.cat_strings[i]}:")
+                text_field = QLineEdit()
+                text_field.text = info
+
+                # Optionally set fixed widths for consistency
+                category_label.setFixedWidth(200)  # Adjust as needed
+                text_field.setFixedWidth(400)      # Adjust as needed
+
+                # Add the label and text to the form layout
+                info_layout.addRow(category_label, text_field)
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to create base template: {e}")
 
