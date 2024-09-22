@@ -33,11 +33,13 @@ class UserInterface(QMainWindow):
         self.entry_page = self.create_entry_page()
         self.access_page = self.create_access_page()
         self.info_page = self.create_info_page()
+        self.edit_page = self.create_edit_page()
 
         # Add all pages to the stacked widget
         self.stacked_widget.addWidget(self.entry_page)
         self.stacked_widget.addWidget(self.access_page)
         self.stacked_widget.addWidget(self.info_page)
+        self.stacked_widget.addWidget(self.edit_page)
 
         # Show the entry page initially
         self.stacked_widget.setCurrentWidget(self.entry_page)
@@ -108,22 +110,42 @@ class UserInterface(QMainWindow):
 
     def create_edit_page(self):
         edit_page = QWidget()
-        layout = QVBoxLayout()
+        
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(50, 50, 50, 50)
 
-        self.edit_fields = {}
-        for key, value in self.info_dict.items():
-            layout.addWidget(QLabel(f"Edit {key}:"))
-            line_edit = QLineEdit(value)  # Pre-fill with current info
-            layout.addWidget(line_edit)
-            self.edit_fields[key] = line_edit  # Store references to line edits
+        edit_layout = QFormLayout()  # Use QFormLayout for label-field alignment
 
-        layout.addStretch()
+        # self.edit_fields = {}
+
+        try:
+            for key in self.cat_strings:
+                category_label = QLabel(f"{key}:")
+                edit_info = QLabel("Replace with prefilled information from nfc")
+                # edit_line = QLineEdit("replace with prefilled information from nfc")
+
+                category_label.setFixedWidth(200)  # Adjust as needed
+
+                edit_layout.addRow(category_label, edit_info)
+                # self.edit_fields[key] = edit_line # Map the edited text to category
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to create base template: {e}")
+            return edit_page
+
+        buttons_layout = QHBoxLayout() # Create a horizontal layout for buttons
+        buttons_layout.addStretch()  # Push buttons to the right
 
         confirm_button = QPushButton("Confirm")
-        confirm_button.clicked.connect(self.confirm_changes)  # Connect confirm button
-        layout.addWidget(confirm_button)
+        buttons_layout.addWidget(confirm_button) # add confirm button to button layout
 
-        edit_page.setLayout(layout)
+        # confirm_button.clicked.connect(self.confirm_changes)  # Connect confirm button
+
+        main_layout.addLayout(edit_layout)
+        main_layout.addStretch()
+        main_layout.addLayout(buttons_layout)
+
+        edit_page.setLayout(main_layout)
         return edit_page
 
     def repopulate_info_page(self):
@@ -239,16 +261,16 @@ class UserInterface(QMainWindow):
         writer = NfcWriter.NfcWriter()
         connection = None  # Replace with actual connection if needed
 
-        try:
-            for key, line_edit in self.edit_fields.items():
-                new_value = line_edit.text()
-                # Write the new value to the NFC card
-                writer.write_category(connection, key, new_value)
+    #     try:
+    #         for key, line_edit in self.edit_fields.items():
+    #             new_value = line_edit.text()
+    #             # Write the new value to the NFC card
+    #             writer.write_category(connection, key, new_value)
 
-            QMessageBox.information(self, "Success", "Information updated successfully!")
-            self.stacked_widget.setCurrentWidget(self.info_page)
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to update NFC data: {e}")
+    #         QMessageBox.information(self, "Success", "Information updated successfully!")
+    #         self.stacked_widget.setCurrentWidget(self.info_page)
+    #     except Exception as e:
+    #         QMessageBox.critical(self, "Error", f"Failed to update NFC data: {e}")
 
     def go_to_access_page(self):
         self.stacked_widget.setCurrentWidget(self.access_page)
