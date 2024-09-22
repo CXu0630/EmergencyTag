@@ -45,7 +45,13 @@ class NfcReader:
                 break
     
         print(str_bytes)
-        text = AesCtr.aes_ctr_decrypt(self.nonce, str_bytes.replace(b'\x00', b''))
+        text = None
+
+        try:
+            text = AesCtr.aes_ctr_decrypt(self.nonce, str_bytes.replace(b'\x00', b''))
+        except:
+            text = None
+            
         return text
     
     def read_nonce(self):

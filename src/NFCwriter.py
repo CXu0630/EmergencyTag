@@ -3,8 +3,10 @@ from EmInfoLength import EmInfoLength
 import AesCtr
 
 class NfcWriter:
-    def __init__(self, nonce, connection):
+    def __init__(self, connection, nonce = None):
         self.connection = connection
+        if nonce == None:
+            nonce = AesCtr.gen_nonce()
         self.nonce = nonce
 
     def write_page(self, page_number, data_bytes):

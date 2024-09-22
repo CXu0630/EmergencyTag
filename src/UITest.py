@@ -6,14 +6,15 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt
 from EmInfoLength import EmInfoLength
-import NfcReader
-import NfcConnecter
-import NfcWriter
+from NfcReader import NfcReader
+from NfcWriter import NfcWriter
 
 class UserInterface(QMainWindow):
     
     def __init__(self):
         super().__init__()
+
+        self.connection = None
 
         self.categories = ['name', 'blood_type', 'em_contact', 'birth_date', 'allergies', 
                   'med_history']
@@ -125,6 +126,60 @@ class UserInterface(QMainWindow):
         edit_page.setLayout(layout)
         return edit_page
 
+    def repopulate_info_page(self):
+        info_page = QWidget()
+        if self.connection == None:
+            print('No connection, unable to repopulate info page.')
+            return None
+        
+        reader = NfcReader(self.connection)
+
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(50, 50, 50, 50)
+
+        info_layout = QFormLayout()  # Use QFormLayout for label-field alignment
+
+        try:
+            for i in range(len(self.cat_strings)):
+                info = reader.read_category(self.categories[i])  # Replace with actual data retrieval logic
+                category_label = QLabel(f"{self.cat_strings[i]}:")
+                text_label = QLabel(info)
+                text_label.setWordWrap(True)  # Enable word wrap for long text
+
+                # Optionally set fixed widths for consistency
+                category_label.setFixedWidth(200)  # Adjust as needed
+                text_label.setFixedWidth(400)      # Adjust as needed
+
+                # Add the label and text to the form layout
+                info_layout.addRow(category_label, text_label)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to create base template: {e}")
+
+        # Create a horizontal layout for buttons
+        buttons_layout = QHBoxLayout()
+        buttons_layout.addStretch()  # Push buttons to the right
+
+        exit_button = QPushButton("Back")
+        edit_button = QPushButton("Edit")
+
+        # Add buttons to the buttons_layout
+        buttons_layout.addWidget(exit_button)
+        buttons_layout.addWidget(edit_button)
+
+        # Correct connections without calling the methods
+        edit_button.clicked.connect(self.go_to_edit_page)
+        exit_button.clicked.connect(self.go_to_access_page)
+
+        main_layout.addLayout(info_layout)
+        main_layout.addStretch()
+        main_layout.addLayout(buttons_layout)
+
+        info_page.setLayout(main_layout)
+        
+        self.stacked_widget.removeWidget(self.info_page)
+        self.info_page = info_page
+        self.stacked_widget.addWidget(self.info_page)
+
     def confirm_changes(self):
         # Here, write the updated information back to the NFC card
         writer = NfcWriter.NfcWriter()
@@ -152,3 +207,12 @@ class UserInterface(QMainWindow):
 
     def go_to_entry_page(self):
         self.stacked_widget.setCurrentWidget(self.entry_page)
+    
+    def add_card_handler(self, connection):
+        self.go_to_access_page()
+        self.connection = connection
+        self.repopulate_info_page()
+
+    def remove_card_handler(self):
+        self.go_to_entry_page()
+        self.connection = None
