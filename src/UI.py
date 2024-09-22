@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QMessageBox, QApplication, QLineEdit, QMainWindow, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QStackedWidget
 from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtGui import QKeyEvent, QFont
 from EmInfoLength import EmInfoLength
 import NfcReader
 import NfcConnecter
@@ -35,7 +35,9 @@ class UserInterface(QMainWindow):
     def draw_access_page(self):
         self.access_page = QWidget()
         layout = QHBoxLayout()
+        access_button_font = QFont("Aerial", 16)
         center_button = QPushButton("Access")
+        center_button.setFont(access_button_font)
         layout.addWidget(center_button, alignment=Qt.AlignCenter)
         self.access_page.setLayout(layout)
         self.stacked_widget.addWidget(self.access_page) # Add page to the stacked widget
