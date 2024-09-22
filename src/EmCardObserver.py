@@ -4,7 +4,7 @@ from smartcard.ATR import ATR
 from PyQt5.QtCore import QObject, pyqtSignal
 
 class EmCardObserver(CardObserver, QObject):
-    add_card_signal = pyqtSignal()        # Signal emitted when a card is added
+    add_card_signal = pyqtSignal(object)        # Signal emitted when a card is added
     remove_card_signal = pyqtSignal()     # Signal emitted when a card is removed
 
     def __init__(self):
@@ -24,7 +24,7 @@ class EmCardObserver(CardObserver, QObject):
                 connection.connect()
                 
                 # Emit the add_card_signal
-                self.add_card_signal.emit()
+                self.add_card_signal.emit(connection)
                 
             except Exception as e:
                 print(f"Failed to connect to the card: {e}")
