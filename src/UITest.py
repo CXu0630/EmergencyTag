@@ -10,6 +10,7 @@ from PyQt5.QtGui import QPixmap, QIcon, QFontDatabase, QFont
 from EmInfoLength import EmInfoLength
 from NfcReader import NfcReader
 from NfcWriter import NfcWriter
+import os
 
 class UserInterface(QMainWindow):
     
@@ -24,11 +25,18 @@ class UserInterface(QMainWindow):
                             'Allergies', 'Medical History']
         self.edit_fieds = {}
 
+        # Get the absolute path of the current file
+        current_file = os.path.abspath(__file__)
+        # Get the directory name of the current file
+        current_dir = os.path.dirname(current_file)
+        # Get the parent directory
+        parent_dir = os.path.dirname(current_dir)
+
         # Initialize the main window
         self.setWindowTitle("emtag")
         self.setGeometry(800, 800, 700, 1000)
         # Set window icon (logo)
-        self.setWindowIcon(QIcon("E:\EmergencyTag\logo ai-02.png"))
+        self.setWindowIcon(QIcon(parent_dir + "\logo ai-02.png"))
 
         # Add a tool bar at the top of the window
         self.toolbar = QToolBar()
@@ -44,7 +52,7 @@ class UserInterface(QMainWindow):
         
 
         # Load the logo image
-        logo_pixmap = QPixmap("E:\EmergencyTag\logo ai-01.png")
+        logo_pixmap = QPixmap(parent_dir + "\logo ai-01.png")
         logo_label = QLabel()
         logo_label.setPixmap(logo_pixmap)
 
