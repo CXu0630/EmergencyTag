@@ -25,6 +25,9 @@ class UserInterface(QMainWindow):
                             'Allergies', 'Medical History']
         self.edit_fieds = {}
 
+        #create a user database to store username and password
+        self.users = []
+
         # Get the absolute path of the current file
         current_file = os.path.abspath(__file__)
         # Get the directory name of the current file
@@ -70,12 +73,14 @@ class UserInterface(QMainWindow):
         self.access_page = self.create_access_page()
         self.info_page = self.create_info_page()
         self.edit_page = self.create_edit_page()
+        self.password_page = self.create_password_page()
 
         # Add all pages to the stacked widget
         self.stacked_widget.addWidget(self.entry_page)
         self.stacked_widget.addWidget(self.access_page)
         self.stacked_widget.addWidget(self.info_page)
         self.stacked_widget.addWidget(self.edit_page)
+        self.stacked_widget.addWidget(self.password_page)
 
         # Show the entry page initially
         self.stacked_widget.setCurrentWidget(self.entry_page)
@@ -98,8 +103,26 @@ class UserInterface(QMainWindow):
         center_button = QPushButton("Access")
         layout.addWidget(center_button, alignment=Qt.AlignCenter)
         access_page.setLayout(layout)
-        center_button.clicked.connect(self.go_to_info_page)
+        center_button.clicked.connect(self.go_to_password_page)
         return access_page
+    
+    def create_password_page(self):
+        password_page = QWidget()
+        layout = QHBoxLayout()
+
+        self.institution_name_input = QLineEdit()
+        self.institution_name_input.setPlaceholderText("Enter institution name")
+
+        self.password_input = QLineEdit()
+        self.password_input.setPlaceholderText("Enter password")
+        self.password_input.setEchoMode(QLineEdit.Password)
+        
+        layout.addWidget(self.institution_name_input)
+        layout.addWidget(self.password_input)
+
+        password_page.setLayout(layout)
+        self.password_input.returnPressed.connect(self.go_to_info_page)
+        return password_page
 
     def create_info_page(self):
         info_page = QWidget()
@@ -321,6 +344,9 @@ class UserInterface(QMainWindow):
 
     def go_to_access_page(self):
         self.stacked_widget.setCurrentWidget(self.access_page)
+    
+    def go_to_password_page(self):
+        self.stacked_widget.setCurrentWidget(self.password_page)
 
     def go_to_info_page(self):
         self.stacked_widget.setCurrentWidget(self.info_page)
@@ -340,6 +366,74 @@ class UserInterface(QMainWindow):
     def remove_card_handler(self):
         self.go_to_entry_page()
         self.connection = None
+
+'''
+    def create_login_page(self):
+        login_page = QWidget()
+        layout = QVBoxLayout()
+        self.username_input = QLineEdit()
+        self.username_input.setPlaceholderText("Enter Username")
+        
+        
+        self.password_input = QLineEdit()
+        self.password_input.setPlaceholderText("Enter password")
+        self.password_input.setEchoMode(QLineEdit.Password)
+        
+        login_button = QPushButton("Login")
+        self.username_input.returnPressed.connect(self.authenticate_user)
+        self.password_input.returnPressed.connect(self.authenticate_user)
+        login_button.clicked.connect(self.authenticate_user)
+
+        register_request_button = QPushButton("Create a new account")
+        register_request_button.clicked.connect(self.go_to_register_page())
+
+        layout.addWidget(QLabel("Login to Emtag"))
+        layout.addWidget(self.username_input)
+        layout.addWidget(self.password_input)
+        layout.addWidget(login_button)
+        layout.addWidget(register_request_button)
+
+
+
+        login_page.setLayout(layout)
+        return login_page
+    
+    def register_page(self):
+        register_page = QWidget()
+        layout = QVBoxLayout()
+        self.new_username_input = QLineEdit()
+        self.new_username_input.setPlaceholderText("Create a new user name")
+        self.new_password_input = QLineEdit()
+        self.new_password_input.setPlaceholderText("Create a password")
+        self.confirm_password_input = QLineEdit()
+        self.confirm_password_input.setPlaceholderText0("Retype the password")
+        register_button = QPushButton("Register")
+        register_button.clicked.connect(self.create_new_account())
+
+        layout.addWidget(QLabel("Register a New Account"))
+        layout.addWidget(self.new_username_input)
+        layout.addWidget(self.new_password_input)
+        layout.addWidget(self.confirm_password_input)
+        layout.addWidget(register_button)
+
+        register_page.setLayout(layout)
+        return register_page
+         
+    def go_to_register_page(self):
+        self.stacked_widget.setCurrentWidget(self.register_page)
+
+    def authenticate_user(self):
+        user_name = self.username_input.text()
+        password = self.password_input.text()
+
+        if user_name.self.users and self.users[user_name] == password:
+            QMessageBox.information(self, "Success", "Login Successful!")
+            self.go_to_access_page()
+        else:
+            QMessageBox.information(self, "Error", "Invalid Username or Password. Try again.")
+'''
+
+
 
 # app = QApplication([])
 

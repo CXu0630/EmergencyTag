@@ -80,3 +80,4 @@ class NfcWriter:
             page_number = starting_page + i
             data = list(page)
             self.write_page(page_number, data)
+    
